@@ -7,13 +7,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Install NodeJS
+        uses: actions/setup-node@v2-beta
+        with:
+           node-version: 15
       - uses: borales/actions-yarn@v2.0.0
         with:
           cmd: install # will run `yarn install` command
       - uses: borales/actions-yarn@v2.0.0
         with:
           cmd: build # will run `yarn build` command
-      - uses: borales/actions-yarn@v2.0.0
-        with:
-         auth-token: ${{ secrets.SURGE_TOKEN }}
-         registry-url: nasir-project004.surge.sh
+      - name: Install SUrge
+        run: npm install --global surge
+      - name: Run Surge
+        run: surge ./build nasir-project004.surge.sh --token ${{secrets.SURGE_TOKEN}}
+     
